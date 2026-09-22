@@ -1,0 +1,12 @@
+{
+    "KPackageStructure": "KWin/Script",
+    "KPlugin": {
+        "Id": "vd-grid",
+        "Name": "Per-row Virtual Desktops",
+        "Description": "Create and remove virtual desktops inside the current grid row",
+        "Icon": "preferences-system-windows-script-test",
+        "License": "MIT",
+        "Authors": [{ "Name": "Edward" }]
+    },
+    "X-Plasma-API": "javascript"
+}

@@ -1,0 +1,6 @@
+# Local-only files: machine state and working notes. Not for publication.
+CLAUDE.md
+diary.md
+kwin-vd-grid-PLAN.md
+kwinrc.backup
+*.backup
