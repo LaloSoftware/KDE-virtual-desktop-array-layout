@@ -156,6 +156,7 @@ function bounce() {
             bouncing = true;
             workspace.currentDesktop = d;
             bouncing = false;
+            log("bounced off placeholder at row " + row + " col " + col + " -> " + d.name);
             return;
         }
     }
