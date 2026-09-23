@@ -86,7 +86,7 @@ The whole implementation, in one file. By role rather than line by line:
 | `normalize()` | Guarantees the list is an exact rectangle before any operation, padding with placeholders if something outside the script left it ragged. Cheap, and runs first in every action. |
 | `addInRow()` | The create action. Reclaims a placeholder hole in the current row if there is one; otherwise grows a whole new column, inserting **last row first** so that each insertion only shifts positions after it. |
 | `removeInRow()` | The remove action. Refuses on column 0 (the row's anchor), relocates the desktop's windows one column left, renames the desktop to a placeholder, then compacts the last column away if it has become entirely placeholders. |
-| `bounce()` | Connected to the desktop-changed signal. If you arrive on a placeholder, slides left to the nearest real desktop in the row. Guarded by a re-entry flag so the switch it performs cannot retrigger it. |
+| `bounce()` | Connected to the desktop-changed signal. If you arrive on a placeholder, slides left to the nearest real desktop in the row. Guarded by a re-entry flag so the switch it performs cannot retrigger it. Logs every bounce: where wrap-around navigation is enabled, that log line is the only reliable way to tell a bounce from KDE's own wrap. |
 | `setName()` | Renames a desktop. Tries the property first and falls back to the D-Bus setter, because whether the property is writable from a script binding is version-dependent. |
 | `uniqueNameForRow()` | Derives the new desktop's name from the row's first desktop (`Games` → `Games 2`) and avoids collisions with names already in that row. |
 
@@ -234,7 +234,12 @@ binding, which is half of what you are verifying.
 - on a single-desktop row, switching right leaves you where you were (bounced)
 - switching vertically from a second column lands on a real desktop, never on a `·`
 
-*Gate:* you never come to rest on a `·`.
+*Gate:* you never come to rest on a `·`, and each correction prints
+`vd-grid: bounced off placeholder at row <r> col <c> -> <name>` in the journal.
+
+Read that line rather than trusting the screen. If "navigation wraps around" is enabled,
+KDE wraps you at the grid's edges on its own, which can look identical to a bounce. Silence
+in the journal means something other than this script moved you.
 
 **Step 6 — removal keeps windows.** Open a window on a second-column desktop and press
 `Ctrl+Super+Shift+N`.
